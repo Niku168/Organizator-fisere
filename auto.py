@@ -8,6 +8,45 @@ from tkinter import *
 from tkinter import filedialog
 
 source_f = ''
+dest_f_video = ''
+dest_f_music = ''
+dest_f_documents = ''
+dest_f_image = ''
+dest_f_sfx = ''
+dest_f_torrents = ''
+dest_f_altele = ''
+
+dest_folders = {
+    "SFX": dest_f_sfx,
+    "Video": dest_f_video,
+    "Muzica": dest_f_music,
+    "Imagini": dest_f_image,
+    "Documente": dest_f_documents,
+    "Torrente": dest_f_torrents,
+    "Altele": dest_f_altele
+}
+
+def select_dest(folder_type):
+    global dest_f_documents, dest_f_altele, dest_f_image, dest_f_music, dest_f_image, dest_f_sfx, dest_f_torrents, dest_f_video
+    folder_path = filedialog.askdirectory()
+    if folder_path:
+        if folder_type == "Documente":
+               dest_f_documents = folder_path
+        elif folder_type == "Altele":
+               dest_f_altele = folder_path
+        elif folder_type == "Imagini":
+               dest_f_image_ = folder_path
+        elif folder_type == "Muzica":
+               dest_f_music = folder_path
+        elif folder_type == "Imagini":
+               dest_f_image = folder_path
+        elif folder_type == "SFX":
+               dest_f_sfx = folder_path
+        elif folder_type == "Torrente":
+               dest_f_torrents = folder_path
+        elif folder_type == "Video":
+               dest_f_video = folder_path
+        print(f"{folder_type} distinatie: {folder_path}")
 
 def source_button():
     global source_f
@@ -30,13 +69,6 @@ audio_extensions = [".m4a", ".flac", ".mp3", ".wav", ".wma", ".aac"]
 document_extensions = [".doc", ".docx", ".odt", ".pdf", ".xls", ".xlsx", ".ppt", ".pptx"]
 torrent_extensions = [".tpb, ",".torrent"]
 
-#creare fisiere daca nu exista
-def create_directories():
-    directories = [dest_f_altele, dest_f_sfx, dest_f_documents, dest_f_image, dest_f_music, dest_f_torrents, dest_f_video]
-    for directory in directories:
-        if not os.path.exists(directory):
-            os.makedirs(directory)
-            logging.info(f"Fisier creat : {directory}")
 #Schimba numele daca este cazul
 def makeUnique(dest, name):
     filename, extension = splitext(name)
@@ -53,7 +85,7 @@ def move_f(dest, entry, name):
         unique_name = makeUnique(dest, name)
         destination_path = join(dest, unique_name)
     shutil_move(entry.path, destination_path)
-    logging.info(f"Moved {entry.path} to {destination_path}")
+    logging.info(f"Fisierul {entry.path} in {destination_path}")
 
 def check_and_move(entry, name):
         if check_extension(name, audio_extensions):
@@ -86,36 +118,46 @@ def organizare():
 
 def run_program():
     logging.info("Am inceput organizarea...")
-    create_directories()
     organizare()
     logging.info("Organizare efectuata !")
 
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(message)s')
 
+# Crearea interfeței Tkinter
 window = Tk()
-window.geometry("400x300")
+window.geometry("500x600")  # Mărimea ferestrei
 window.title("Organizator fisiere")
 window.config(background="grey")
-
-folder_path = StringVar()
 
 # Frame pentru a centra widgeturile
 frame = Frame(window, bg="grey")
 frame.pack(expand=True)
 
-#label1
-lbl1 = Label(frame, text="Locatie fisiere", bg="grey")
+# Label folderul sursă
+lbl1 = Label(frame, text="Locatie fisiere sursa", bg="grey")
 lbl1.pack(pady=5)
 
-# Label2
+# Variabila folderul sursă
+folder_path = StringVar()
 lbl2 = Label(master=frame, textvariable=folder_path, bg="grey")
 lbl2.pack(pady=5)
 
-# Browse Button
-button2 = Button(frame, text="Browse", command=source_button)
-button2.pack(pady=5)
+# Buton folderul sursă
+button_source = Button(frame, text="Selectează folder sursă", command=source_button)
+button_source.pack(pady=5)
+
+# Label locații destinație
+lbl3 = Label(frame, text="Locatii fisiere de destinatie", bg="grey")
+lbl3.pack(pady=10)
+
+# Crearea butoanelor pentru fiecare destinatie
+for folder_type in dest_folders.keys():
+    button = Button(frame, text=f"Selectează destinație {folder_type}", 
+                    command=lambda f=folder_type: select_dest(f))
+    button.pack(pady=5)
 
 # Run Button
 run_button = Button(frame, text="Start", command=run_program)
-run_button.pack(pady=5)
+run_button.pack(pady=20)
+
 window.mainloop()
