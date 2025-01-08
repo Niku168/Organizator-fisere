@@ -28,8 +28,15 @@ image_extensions = [".jpg", ".jpeg", ".jpe", ".jif", ".jfif", ".jfi", ".png", ".
 video_extensions = [".webm", ".mpg", ".mp2", ".mpeg", ".mpe", ".mpv", ".ogg", ".mp4", ".mp4v", ".m4v", ".avi", ".wmv", ".mov", ".qt", ".flv", ".swf", ".avchd"]
 audio_extensions = [".m4a", ".flac", ".mp3", ".wav", ".wma", ".aac"]
 document_extensions = [".doc", ".docx", ".odt", ".pdf", ".xls", ".xlsx", ".ppt", ".pptx"]
-torrent_extensions = [".tpb"]
+torrent_extensions = [".tpb, ",".torrent"]
 
+#creare fisiere daca nu exista
+def create_directories():
+    directories = [dest_f_altele, dest_f_sfx, dest_f_documents, dest_f_image, dest_f_music, dest_f_torrents, dest_f_video]
+    for directory in directories:
+        if not os.path.exists(directory):
+            os.makedirs(directory)
+            logging.info(f"Fisier creat : {directory}")
 #Schimba numele daca este cazul
 def makeUnique(dest, name):
     filename, extension = splitext(name)
@@ -79,6 +86,7 @@ def organizare():
 
 def run_program():
     logging.info("Am inceput organizarea...")
+    create_directories()
     organizare()
     logging.info("Organizare efectuata !")
 
@@ -95,9 +103,13 @@ folder_path = StringVar()
 frame = Frame(window, bg="grey")
 frame.pack(expand=True)
 
-# Label
-lbl1 = Label(master=frame, textvariable=folder_path, bg="grey")
+#label1
+lbl1 = Label(frame, text="Locatie fisiere", bg="grey")
 lbl1.pack(pady=5)
+
+# Label2
+lbl2 = Label(master=frame, textvariable=folder_path, bg="grey")
+lbl2.pack(pady=5)
 
 # Browse Button
 button2 = Button(frame, text="Browse", command=source_button)
