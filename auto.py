@@ -1,5 +1,5 @@
 import os
-from os import scandir, rename
+from os import scandir
 from os.path import splitext, exists, join
 from shutil import move as shutil_move
 import logging
@@ -33,8 +33,6 @@ def select_dest(folder_type):
                dest_f_documents = folder_path
         elif folder_type == "Altele":
                dest_f_altele = folder_path
-        elif folder_type == "Imagini":
-               dest_f_image_ = folder_path
         elif folder_type == "Muzica":
                dest_f_music = folder_path
         elif folder_type == "Imagini":
