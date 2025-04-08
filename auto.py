@@ -2,7 +2,6 @@ import os
 from os import scandir, rename
 from os.path import splitext, exists, join
 from shutil import move as shutil_move
-from time import sleep
 import logging
 from tkinter import *
 from tkinter import filedialog
@@ -67,7 +66,7 @@ image_extensions = [".jpg", ".jpeg", ".jpe", ".jif", ".jfif", ".jfi", ".png", ".
 video_extensions = [".webm", ".mpg", ".mp2", ".mpeg", ".mpe", ".mpv", ".ogg", ".mp4", ".mp4v", ".m4v", ".avi", ".wmv", ".mov", ".qt", ".flv", ".swf", ".avchd"]
 audio_extensions = [".m4a", ".flac", ".mp3", ".wav", ".wma", ".aac"]
 document_extensions = [".doc", ".docx", ".odt", ".pdf", ".xls", ".xlsx", ".ppt", ".pptx"]
-torrent_extensions = [".tpb, ",".torrent"]
+torrent_extensions = [".tpb",".torrent"]
 
 #Schimba numele daca este cazul
 def makeUnique(dest, name):
